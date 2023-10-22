@@ -31,6 +31,25 @@ export const useTodos = create(
           }),
         };
       }),
+    fetchTodos: async () => {
+      set({ loading: true });
+
+      try {
+        const response = await fetch(
+          'https://jsonplaceholder.typicode.com/todos?_limit=10'
+        );
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch todos!');
+        }
+
+        set({ todos: await response.json(), error: null }); //!
+      } catch (error) {
+        set({ error: error.message });
+      } finally {
+        set({ loading: false });
+      }
+    },
   }))
 );
 
